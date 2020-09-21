@@ -21,7 +21,6 @@ cv2.waitKey(0)
 (h, w) = image.shape[:2]
 center = (w // 2, h // 2)
 
-# rotation of 180 degrees
 rotation = cv2.getRotationMatrix2D(center, 180, 1.0)
 rotated = cv2.warpAffine(image, rotation, (w, h))
 cv2.imshow("180 rotation", rotated)
@@ -36,13 +35,14 @@ plt.title("'Flattened' Color Histogram")
 plt.xlabel("Bins")
 plt.ylabel("# of Pixels")
 
-cv2.waitKey(0)
-
 for (chan, color) in zip(chans, colors):
 	hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
 	plt.plot(hist, color = color)
 	plt.xlim([0, 256])
 
-fig = plt.figure()
+hist = cv2.calcHist([image], [0, 1, 2],
+	None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
+print("3D histogram shape: {}, with {} values".format(
+	hist.shape, hist.flatten().shape[0]))
 
-cv2.waitKey(0)
+plt.show()

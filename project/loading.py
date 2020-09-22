@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import argparse
 import cv2
 import numpy as np
+import time
 
 # getting path to image, Chapter 3
 ap = argparse.ArgumentParser()
@@ -24,13 +25,13 @@ center = (w // 2, h // 2)
 rotation = cv2.getRotationMatrix2D(center, 180, 1.0)
 rotated = cv2.warpAffine(image, rotation, (w, h))
 cv2.imshow("180 rotation", rotated)
+
 cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 # histograms for color chapter 7
-
 chans = cv2.split(image)
 colors = ("b", "g", "r")
-plt.figure()
 plt.title("'Flattened' Color Histogram")
 plt.xlabel("Bins")
 plt.ylabel("# of Pixels")
@@ -40,9 +41,27 @@ for (chan, color) in zip(chans, colors):
 	plt.plot(hist, color = color)
 	plt.xlim([0, 256])
 
+
 hist = cv2.calcHist([image], [0, 1, 2],
 	None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
 print("3D histogram shape: {}, with {} values".format(
 	hist.shape, hist.flatten().shape[0]))
 
+cv2.destroyAllWindows()
 plt.show()
+
+
+# Chapter 9 Threshholding
+cv2.waitKey(0)
+
+image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+blurred = cv2.GaussianBlur(image, (5, 5), 0)
+cv2.imshow("Image", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+(T, thresh) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY)
+cv2.imshow("Threshold Binary ", thresh)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

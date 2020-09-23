@@ -52,6 +52,7 @@ plt.show()
 
 
 # Chapter 9 Threshholding / Chapter 8 Blurring
+
 cv2.waitKey(0)
 
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -63,6 +64,8 @@ cv2.destroyAllWindows()
 
 (T, thresh) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY)
 cv2.imshow("Threshold Binary ", thresh)
+
+# Chapter 10 Edge Detection
 
 canny = cv2.Canny(thresh, 30, 150)
 cv2.imshow("Canny", canny)

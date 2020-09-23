@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 import argparse
 import cv2
 import numpy as np
+import grabbingcontours
 
 
 # getting path to image, Chapter 3
@@ -44,8 +45,6 @@ for (chan, color) in zip(chans, colors):
 
 hist = cv2.calcHist([image], [0, 1, 2],
 	None, [8, 8, 8], [0, 256, 0, 256, 0, 256])
-print("3D histogram shape: {}, with {} values".format(
-	hist.shape, hist.flatten().shape[0]))
 
 cv2.destroyAllWindows()
 plt.show()
@@ -57,21 +56,39 @@ cv2.waitKey(0)
 
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(image, (5, 5), 0)
-cv2.imshow("Image", image)
+cv2.imshow("black and white, blurred", blurred)
+
+canny = cv2.Canny(blurred, 30, 150)
+cv2.imshow("blur canny", canny)
+
+cnts = cv2.findContours(canny.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("Using Gaussian Blurring, I count {} circles in this image".format(len(cnts)))
+#cnts = grabbingcontours.grab_contours(cnts)
+
+cannyI = canny.copy()
+cv2.drawContours(cannyI, cnts, -1, (0, 255, 0), 2)
+cv2.imshow("blur edge detection", cannyI)
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-
-(T, thresh) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY)
-cv2.imshow("Threshold Binary ", thresh)
-
 # Chapter 10 Edge Detection
 
-canny = cv2.Canny(thresh, 30, 150)
-cv2.imshow("Canny", canny)
+(T, thresh) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY)
+cv2.imshow("thresholding", thresh)
 
-cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+canny2 = cv2.Canny(thresh, 30, 150)
+cv2.imshow("thresh canny", canny2)
 
-print("I count {} stars in this image".format(len(cnts)))
+cnts2 = cv2.findContours(canny2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("Using Thresholding and Gaussian Blurring, I count {} circles in this image".format(len(cnts)))
+#cnts2 = grabbingcontours.grab_contours(cnts)
+
+"""
+cannyI2 = canny.copy()
+cv2.drawContours(cannyI2, cnts2, -1, (0, 255, 0), 2)
+cv2.imshow("threshholding edge detection", cannyI2)
+"""
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()

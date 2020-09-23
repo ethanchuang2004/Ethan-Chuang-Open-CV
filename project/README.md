@@ -29,3 +29,17 @@ used edge detection and contours to count the amount of "stars" in Starry Night 
 
 
 Instructions:
+
+Make sure all packages from the openCV textbook are installed.
+
+After moving into the project folder, run this command: python loading.py --image /Users/egc/Documents/GitHub/Ethan-Chuang-Open-CV/project/starrynight.webp
+
+Then a default image, unedited will load, where you can press spacebar.
+
+After you press spacebar, a 180 flipped upside down image will appear.
+
+Then, if you press space once again, the 2d histogram will appear showing the variance of colors.
+
+You will then have to press the x in the corner of the histogram graph, where a black and white image will show up, unflipped.
+
+This image will be modified with blurs and thresholding in the next buttons of space pressing, and will close to show the terminal window showing the amount of stars.

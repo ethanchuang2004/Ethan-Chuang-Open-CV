@@ -65,9 +65,11 @@ cnts = cv2.findContours(canny.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
 print("Using Gaussian Blurring, I count {} circles in this image".format(len(cnts)))
 #cnts = grabbingcontours.grab_contours(cnts)
 
+"""
 cannyI = canny.copy()
 cv2.drawContours(cannyI, cnts, -1, (0, 255, 0), 2)
 cv2.imshow("blur edge detection", cannyI)
+"""
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

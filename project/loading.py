@@ -58,18 +58,20 @@ image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(image, (5, 5), 0)
 cv2.imshow("black and white, blurred", blurred)
 
-canny = cv2.Canny(blurred, 30, 150)
-cv2.imshow("blur canny", canny)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
-cnts = cv2.findContours(canny.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("Using Gaussian Blurring, I count {} circles in this image".format(len(cnts)))
-#cnts = grabbingcontours.grab_contours(cnts)
+blurImage = cv2.Canny(blurred, 30, 150)
 
-"""
-cannyI = canny.copy()
-cv2.drawContours(cannyI, cnts, -1, (0, 255, 0), 2)
-cv2.imshow("blur edge detection", cannyI)
-"""
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+(contour, _) = cv2.findContours(blurImage.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("Using Gaussian Blurring, I count {} circles in this image".format(len(contour)))
+
+circles = blurImage.copy()
+cv2.drawContours(circles, contour, -1, (0, 255, 0), 2)
+cv2.imshow("blur edge detection", circles)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
@@ -79,18 +81,17 @@ cv2.destroyAllWindows()
 (T, thresh) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY)
 cv2.imshow("thresholding", thresh)
 
-canny2 = cv2.Canny(thresh, 30, 150)
-cv2.imshow("thresh canny", canny2)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
-cnts2 = cv2.findContours(canny2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("Using Thresholding and Gaussian Blurring, I count {} circles in this image".format(len(cnts)))
-#cnts2 = grabbingcontours.grab_contours(cnts)
+threshImage = cv2.Canny(thresh, 10, 30)
 
-"""
-cannyI2 = canny.copy()
-cv2.drawContours(cannyI2, cnts2, -1, (0, 255, 0), 2)
-cv2.imshow("threshholding edge detection", cannyI2)
-"""
+(contour2, _) = cv2.findContours(threshImage.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+print("Using Thresholding and Gaussian Blurring, I count {} circles in this image".format(len(contour2)))
+
+circles2 = threshImage.copy()
+cv2.drawContours(circles2, contour2, -1, (0, 255, 0), 2)
+cv2.imshow("threshholding edge detection", circles2)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

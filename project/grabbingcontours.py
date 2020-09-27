@@ -7,9 +7,6 @@ def grab_contours(cnts):
 	elif len(cnts) == 3:
 		cnts = cnts[1]
 	else:
-		raise Exception(("Contours tuple must have length 2 or 3, "
-			"otherwise OpenCV changed their cv2.findContours return "
-			"signature yet again. Refer to OpenCV's documentation "
-			"in that case"))
+		raise Exception(("Error Message"))
 
 	return cnts

@@ -4,7 +4,21 @@ import argparse
 import cv2
 import numpy as np
 import grabbingcontours
+import glob
 
+# https://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-edge-detection-with-python-and-opencv/
+# some code i found from online to help with auto canny detection for
+# thresholds
+
+def auto_canny(image, sigma=0.33):
+	# compute the median of the single channel pixel intensities
+	v = np.median(image)
+	# apply automatic Canny edge detection using the computed median
+	lower = int(max(0, (1.0 - sigma) * v))
+	upper = int(min(255, (1.0 + sigma) * v))
+	edged = cv2.Canny(image, lower, upper)
+	# return the edged image
+	return edged
 
 # getting path to image, Chapter 3
 ap = argparse.ArgumentParser()
@@ -67,10 +81,10 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 (contour, _) = cv2.findContours(blurImage.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("Using Gaussian Blurring, I count {} circles in this image".format(len(contour)))
+print("Using Canny Detection, I count {} shapes in this image".format(len(contour)))
 
 circles = blurImage.copy()
-cv2.drawContours(circles, contour, -1, (0, 255, 0), 2)
+cv2.drawContours(circles, contour, -1, (255, 255, 255), 2)
 cv2.imshow("blur edge detection", circles)
 
 cv2.waitKey(0)
@@ -78,19 +92,19 @@ cv2.destroyAllWindows()
 
 # Chapter 10 Edge Detection
 
-(T, thresh) = cv2.threshold(blurred, 155, 255, cv2.THRESH_BINARY)
+(T, thresh) = cv2.threshold(image, 155, 255, cv2.THRESH_BINARY)
 cv2.imshow("thresholding", thresh)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-threshImage = cv2.Canny(thresh, 10, 30)
+threshImage = auto_canny(thresh)
 
 (contour2, _) = cv2.findContours(threshImage.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-print("Using Thresholding and Gaussian Blurring, I count {} circles in this image".format(len(contour2)))
+print("Using Thresholding, I count {} shapes in this image".format(len(contour2)))
 
 circles2 = threshImage.copy()
-cv2.drawContours(circles2, contour2, -1, (0, 255, 0), 2)
+cv2.drawContours(circles2, contour2, -1, (255, 0, 255), 2)
 cv2.imshow("threshholding edge detection", circles2)
 
 cv2.waitKey(0)
